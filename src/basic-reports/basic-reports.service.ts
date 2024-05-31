@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 import { PrinterService } from 'src/printer/printer.service';
-import { getHelloWorldReport } from 'src/reports';
+import { getEmploymentLetterReport, getHelloWorldReport } from 'src/reports';
 
 @Injectable()
 export class BasicReportsService extends PrismaClient implements OnModuleInit {
@@ -18,6 +18,14 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
 
   hello() {
     const documentDefinition = getHelloWorldReport({ name: 'Benito Martinez' });
+    const document = this.printerService.createPdf(documentDefinition);
+
+    return document;
+  }
+
+  employmentLetter() {
+    const documentDefinition = getEmploymentLetterReport();
+
     const document = this.printerService.createPdf(documentDefinition);
 
     return document;
