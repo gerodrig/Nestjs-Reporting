@@ -1,5 +1,17 @@
 import { StyleDictionary, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from './sections/header.section';
+import { DateFormatter } from 'src/helpers';
+
+type ReportValues = {
+  employerName: string;
+  employerPosition: string;
+  employeeName: string;
+  employeePosition: string;
+  employeeStartDate: Date;
+  employeeHours: number;
+  employeeWorkSchedule: string;
+  employerCompany: string;
+};
 
 const style: StyleDictionary = {
   header: {
@@ -26,7 +38,19 @@ const style: StyleDictionary = {
   },
 };
 
-export const getEmploymentLetterReport = (): TDocumentDefinitions => {
+export const getEmploymentLetterReportById = (
+  values: ReportValues,
+): TDocumentDefinitions => {
+  const {
+    employerName,
+    employerPosition,
+    employeeName,
+    employeePosition,
+    employeeStartDate,
+    employeeHours,
+    employeeWorkSchedule,
+    employerCompany,
+  } = values;
   const docDefinition: TDocumentDefinitions = {
     styles: style,
     pageMargins: [40, 40, 40, 60],
@@ -40,17 +64,17 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
         style: 'header',
       },
       {
-        text: `This is to certify that Mr. John Doe is employed as a Software Engineer at Acme Inc. with effect from 1st January 2021. His annual salary is $120,000.00. He is entitled to 14 days of paid leave per year. He is required to work 40 hours per week.\n\n`,
+        text: `${employerName} This is to certify that ${employeeName} is employed as a ${employeePosition} at ${employeePosition} with effect from ${employeeStartDate}. His hours of work are ${employeeHours}. His work is ${employeeWorkSchedule} He is entitled to 14 days of paid leave per year. He is required to work 40 hours per week.\n\n`,
         style: 'body',
       },
       {
         text: `Kind Regards,`,
         style: 'signature',
       },
-      { text: '[Employer Name]', style: 'signature' },
-      { text: '[Job Title]', style: 'signature' },
-      { text: '[Company Name]', style: 'signature' },
-      { text: '[Date]', style: 'signature' },
+      { text: employerName, style: 'signature' },
+      { text: employerPosition, style: 'signature' },
+      { text: employerCompany, style: 'signature' },
+      { text: DateFormatter.getDDMMMMYYYY(new Date()), style: 'signature' },
     ],
     footer: {
       text: 'This is a computer-generated letter and does not require a signature.',
