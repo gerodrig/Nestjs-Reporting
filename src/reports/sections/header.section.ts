@@ -24,7 +24,7 @@ const logo: Content = {
 };
 
 export const headerSection = (options: HeaderOptions): Content => {
-  const { title, subTitle, showLogo = true, showDate = true  } = options;
+  const { title, subTitle, showLogo = true, showDate = true } = options;
 
   const headerLogo: Content = showLogo ? logo : null;
   const headerDate: Content = showDate ? currentDate : null;
